@@ -216,3 +216,7 @@ button:focus { outline: 2px solid rgba(255,255,255,0.6); outline-offset: 2px; }
 @media (max-width: 520px) {
   .element { width: 78vw; }
 }
+
+.spectrum-container:empty {
+  display: none;
+}
