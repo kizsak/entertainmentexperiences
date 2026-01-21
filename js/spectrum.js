@@ -1,5 +1,5 @@
 // 1) Put your CSV somewhere public (GitHub raw, published link, etc.)
-const CSV_URL = "CSV_URL_HERE";
+const CSV_URL = "EntertainmentCYOAs.csv";
 
 // Column names expected in your CSV (from your Notion import):
 // Experience, Category, Medium, Immersion Type, Hedonic–Eudaimonic Score (0–100), Description, Link
