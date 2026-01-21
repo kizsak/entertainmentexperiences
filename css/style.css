@@ -1,0 +1,127 @@
+body {
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  text-align: center;
+  background: #ff6e75;
+  margin: 0;
+  padding: 24px;
+}
+
+h1 { margin: 0 0 14px; }
+
+.legend {
+  width: min(980px, 92vw);
+  margin: 0 auto 10px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+}
+
+#container {
+  width: min(980px, 92vw);
+  white-space: nowrap;
+  overflow-x: auto;
+  margin: 14px auto;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.15);
+  padding: 12px;
+  scroll-behavior: smooth;
+}
+
+#lijst {
+  display: inline-flex;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.element {
+  flex: 0 0 auto;
+  width: 320px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 14px;
+  text-align: left;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+}
+
+.topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.title {
+  font-weight: 800;
+  font-size: 14pt;
+  line-height: 1.15;
+}
+
+.score {
+  font-weight: 800;
+  font-size: 12pt;
+  white-space: nowrap;
+}
+
+.meta {
+  margin-top: 6px;
+  font-size: 10.5pt;
+  opacity: 0.9;
+}
+
+.miniBar {
+  height: 8px;
+  border-radius: 999px;
+  background: #eee;
+  margin: 10px 0 10px;
+  overflow: hidden;
+}
+.miniBar > div {
+  height: 100%;
+  background: #000;
+  width: 0%;
+}
+
+.desc {
+  font-size: 10.5pt;
+  line-height: 1.35;
+  margin: 8px 0 0;
+}
+
+details {
+  margin-top: 10px;
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+a {
+  color: #0b57d0;
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+button {
+  background-color: #000;
+  color: #fff;
+  padding: 14px 18px;
+  border: 0;
+  font-size: 18px;
+  border-radius: 8px;
+}
+button:hover { background: #eaeaea; color: #000; }
+button:focus { outline: 2px solid rgba(255,255,255,0.6); outline-offset: 2px; }
+
+@media (max-width: 520px) {
+  .element { width: 78vw; }
+}
