@@ -111,6 +111,97 @@ a:hover { text-decoration: underline; }
   margin-top: 10px;
 }
 
+.spectrum-wrapper {
+  width: min(980px, 92vw);
+  margin: 20px auto;
+  position: relative;
+  padding: 20px 12px;
+}
+
+/* the visible rounded track you already show */
+.spectrum-track {
+  height: 36px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.25);
+}
+
+/* layer that holds markers, positioned absolute over track */
+.marker-layer {
+  position: absolute;
+  left: 12px;            /* matches container padding */
+  right: 12px;
+  top: 20px;             /* aligns markers vertically with track */
+  height: 36px;
+  pointer-events: none;  /* let clicks pass to markers themselves */
+}
+
+/* individual marker (pin) */
+.marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #000;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  cursor: pointer;
+  border: 3px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 10px;
+}
+
+/* small label shown on hover (optional) */
+.marker[data-title]:hover::after {
+  content: attr(data-title);
+  position: absolute;
+  top: -36px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  font-size: 11px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* Details panel */
+.details-panel {
+  width: min(820px, 94vw);
+  margin: 16px auto;
+  background: #fff;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  position: relative;
+}
+
+#details-close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  border: 0;
+  background: #000;
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* small responsive tweak */
+@media (max-width:520px) {
+  .marker { width: 14px; height: 14px; }
+  .marker[data-title]:hover::after { top: -30px; font-size: 10px;}
+}
+
+
 button {
   background-color: #000;
   color: #fff;
