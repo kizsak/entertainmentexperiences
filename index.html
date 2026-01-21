@@ -1,172 +1,41 @@
- <!-- Main stylesheet -->
-  <link rel="stylesheet" href="css/style.css">
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Narrative Processing Spectrum</title>
 
-<h1>Narrative Experiences - Choose Your Own Adventure</h1>
+    <!-- Your stylesheet (optional if you're pasting CSS into CodePen) -->
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
 
-<div class="legend">
-  <span>Hedonic</span>
-  <span>Eudaimonic</span>
-</div>
+  <body>
+    <h1>Narrative Experiences – Choose Your Own Adventure</h1>
 
-<div id="container" aria-label="Scrollable spectrum cards">
-  <ul id="lijst"></ul>
-</div>
-
-<!-- Spectrum (you already have a visual bar; this adds a marker layer) -->
-<div id="spectrum-wrapper" class="spectrum-wrapper">
-  <div id="spectrum-track" class="spectrum-track" role="img" aria-label="Hedonic to Eudaimonic spectrum"></div>
-  <div id="marker-layer" class="marker-layer" aria-hidden="false"></div>
-</div>
-
-<!-- Details pane that shows info when you click a marker -->
-<div id="details-panel" class="details-panel" aria-live="polite" hidden>
-  <button id="details-close" aria-label="Close details">Close</button>
-  <div id="details-content"></div>
-</div>
-
-<div class="controls">
-  <button id="later" aria-label="Scroll left">◀</button>
-  <button id="vroeger" aria-label="Scroll right">▶</button>
-
- // ====== CONFIG: put your public CSV raw URL here (GitHub raw, etc.) ======
-const CSV_URL = "https://kizsak.github.io/entertainmentexperiences/Narrative_Spectrum_Experiences.csv";
-// If you want to paste CSV directly instead of hosting, set CSV_FALLBACK to the text (or leave empty)
-const CSV_FALLBACK = ""; // `PASTE_CSV_TEXT_HERE` if desired
-
-// ------ helper CSV parser (robust enough for quoted commas) ------
-function parseCSV(text) {
-  const rows = [];
-  let cur = "";
-  let row = [];
-  let inQuotes = false;
-  for (let i = 0; i < text.length; i++) {
-    const ch = text[i];
-    const next = text[i + 1];
-    if (ch === '"' && inQuotes && next === '"') {
-      cur += '"'; i++;
-    } else if (ch === '"') {
-      inQuotes = !inQuotes;
-    } else if (ch === ',' && !inQuotes) {
-      row.push(cur); cur = "";
-    } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
-      if (cur !== "" || row.length) {
-        row.push(cur); rows.push(row); row = []; cur = "";
-      }
-    } else {
-      cur += ch;
-    }
-  }
-  if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
-  return rows.filter(r => r.some(c => c.trim() !== ""));
-}
-
-function toNum(x) {
-  const n = Number(String(x||"").trim());
-  return Number.isFinite(n) ? n : 0;
-}
-
-// Render markers on the track
-function renderMarkers(items) {
-  const layer = document.getElementById('marker-layer');
-  layer.innerHTML = '';
-  // ensure sorted left-to-right (low -> high)
-  items.sort((a,b) => a.score - b.score);
-  for (const it of items) {
-    // create marker element
-    const m = document.createElement('button');
-    m.className = 'marker';
-    m.type = 'button';
-    m.setAttribute('aria-label', it.experience + ' — ' + it.score + '/100');
-    m.setAttribute('data-title', `${it.experience} (${it.score}/100)` );
-    m.style.left = `${it.score}%`;   // position along track
-    // optionally put short label number inside marker
-    m.innerHTML = ''; // keep marker visually simple; or put a number like it.score
-    // attach data object for click handler
-    m.dataset.experience = it.experience;
-    m.dataset.category   = it.category;
-    m.dataset.medium     = it.medium;
-    m.dataset.description= it.description;
-    m.dataset.link       = it.link;
-    m.dataset.score      = it.score;
-
-    // click shows details
-    m.addEventListener('click', (e) => {
-      showDetails(it);
-      // ensure marker is visible in viewport inside container
-      const container = document.getElementById('container');
-      const markerRect = m.getBoundingClientRect();
-      const contRect = container.getBoundingClientRect();
-      // if marker is out of center, scroll container to center marker
-      if (markerRect.left < contRect.left + 40 || markerRect.right > contRect.right - 40) {
-        const offset = (markerRect.left + markerRect.right)/2 - (contRect.left + contRect.right)/2;
-        container.scrollBy({ left: offset, behavior: 'smooth' });
-      }
-    });
-
-    layer.appendChild(m);
-  }
-}
-
-// show details in the details panel
-function showDetails(item) {
-  const panel = document.getElementById('details-panel');
-  const content = document.getElementById('details-content');
-  content.innerHTML = `
-    <h2 style="margin-top:0;">${escapeHtml(item.experience)}</h2>
-    <div style="font-size:0.95rem;color:#444;margin-bottom:8px;">
-      <strong>${escapeHtml(item.category)}</strong> · ${escapeHtml(item.medium)} · ${item.score}/100
+    <div class="legend">
+      <span>Hedonic</span>
+      <span>Eudaimonic</span>
     </div>
-    <p style="margin:6px 0 10px;">${escapeHtml(item.description)}</p>
-    ${item.link ? `<p><a href="${escapeHtml(item.link)}" target="_blank" rel="noopener">Open link</a></p>` : ''}
-  `;
-  panel.hidden = false;
-  window.scrollTo({ top: panel.offsetTop - 12, behavior: 'smooth' });
-}
 
-// close button handler
-document.addEventListener('click', (e) => {
-  if (e.target && e.target.id === 'details-close') {
-    document.getElementById('details-panel').hidden = true;
-  }
-});
+    <!-- Spectrum track + marker layer -->
+    <div id="spectrum-wrapper" class="spectrum-wrapper">
+      <div id="spectrum-track" class="spectrum-track" role="img" aria-label="Hedonic to Eudaimonic spectrum"></div>
+      <div id="marker-layer" class="marker-layer" aria-label="Spectrum markers"></div>
+    </div>
 
-// escape helper
-function escapeHtml(s) {
-  return String(s || '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-}
+    <!-- Optional: scroll buttons (only if you wired them in JS) -->
+    <div class="controls">
+      <button id="later" type="button" aria-label="Scroll left">◀</button>
+      <button id="vroeger" type="button" aria-label="Scroll right">▶</button>
+    </div>
 
-// load CSV from URL (or fallback to embedded text)
-async function loadCSV() {
-  let text = '';
-  if (CSV_FALLBACK && CSV_FALLBACK.trim().length > 0) {
-    text = CSV_FALLBACK;
-  } else {
-    const res = await fetch(CSV_URL, { cache: 'no-store' });
-    if (!res.ok) throw new Error('Failed to fetch CSV: ' + res.status);
-    text = await res.text();
-  }
+    <!-- Details panel (opens when a marker is clicked) -->
+    <section id="details-panel" class="details-panel" aria-live="polite" hidden>
+      <button id="details-close" type="button" aria-label="Close details">Close</button>
+      <div id="details-content"></div>
+    </section>
 
-  const rows = parseCSV(text);
-  const header = rows[0].map(h => h.trim());
-  const colIndex = name => header.findIndex(h => h.toLowerCase() === name.toLowerCase().trim());
-  const items = rows.slice(1).map(r => ({
-    experience: r[colIndex('Experience')] || r[0] || '',
-    category:   r[colIndex('Category')] || '',
-    medium:     r[colIndex('Medium')] || '',
-    immersion:  r[colIndex('Immersion Type')] || '',
-    score:      toNum(r[colIndex('Hedonic–Eudaimonic Score (0–100)')] || r[colIndex('Score')] || 0),
-    description:r[colIndex('Description')] || '',
-    link:       r[colIndex('Link')] || ''
-  })).filter(i => i.experience);
-
-  renderMarkers(items);
-}
-
-// Kick off
-loadCSV().catch(err => {
-  console.error(err);
-  const layer = document.getElementById('marker-layer');
-  layer.innerHTML = `<div style="padding:18px;color:#fff;">CSV load error: ${escapeHtml(err.message)}</div>`;
-});
-
-</div>
+    <!-- If you're NOT in CodePen, load your JS file like this (and keep it at the bottom) -->
+    <!-- <script src="js/spectrum.js"></script> -->
+  </body>
+</html>
