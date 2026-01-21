@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Narrative Processing Spectrum</title>
 
-    <!-- Your stylesheet (optional if you're pasting CSS into CodePen) -->
     <link rel="stylesheet" href="css/style.css" />
   </head>
 
@@ -23,19 +22,18 @@
       <div id="marker-layer" class="marker-layer" aria-label="Spectrum markers"></div>
     </div>
 
-    <!-- Optional: scroll buttons (only if you wired them in JS) -->
+    <!-- Scroll buttons (your JS hooks these) -->
     <div class="controls">
       <button id="later" type="button" aria-label="Scroll left">◀</button>
       <button id="vroeger" type="button" aria-label="Scroll right">▶</button>
     </div>
 
-    <!-- Details panel (opens when a marker is clicked) -->
-    <section id="details-panel" class="details-panel" aria-live="polite" hidden>
-      <button id="details-close" type="button" aria-label="Close details">Close</button>
-      <div id="details-content"></div>
-    </section>
+    <!-- THIS is what your current JS renders into -->
+    <div id="container" aria-label="Scrollable cards">
+      <ul id="lijst"></ul>
+    </div>
 
-    <!-- If you're NOT in CodePen, load your JS file like this (and keep it at the bottom) -->
-    <!-- <script src="js/spectrum.js"></script> -->
+    <!-- Load your JS (DO NOT comment this out) -->
+    <script src="js/spectrum.js"></script>
   </body>
 </html>
