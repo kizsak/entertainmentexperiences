@@ -1,7 +1,7 @@
  <!-- Main stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 
-<h1>Narrative Processing Spectrum</h1>
+<h1>Narrative Experiences - Choose Your Own Adventure</h1>
 
 <div class="legend">
   <span>Hedonic</span>
@@ -10,6 +10,18 @@
 
 <div id="container" aria-label="Scrollable spectrum cards">
   <ul id="lijst"></ul>
+</div>
+
+<!-- Spectrum (you already have a visual bar; this adds a marker layer) -->
+<div id="spectrum-wrapper" class="spectrum-wrapper">
+  <div id="spectrum-track" class="spectrum-track" role="img" aria-label="Hedonic to Eudaimonic spectrum"></div>
+  <div id="marker-layer" class="marker-layer" aria-hidden="false"></div>
+</div>
+
+<!-- Details pane that shows info when you click a marker -->
+<div id="details-panel" class="details-panel" aria-live="polite" hidden>
+  <button id="details-close" aria-label="Close details">Close</button>
+  <div id="details-content"></div>
 </div>
 
 <div class="controls">
