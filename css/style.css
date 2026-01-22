@@ -229,6 +229,29 @@ button:focus { outline: 2px solid rgba(255,255,255,0.6); outline-offset: 2px; }
   word-break: break-word;
 }
 
+/* 1) Make sure card contents are allowed to shrink */
+.card,
+.card * {
+  min-width: 0;              /* CRITICAL for flex/grid overflow */
+  box-sizing: border-box;
+}
+
+/* 2) Force wrapping + allow breaking long tokens */
+.card-title,
+.card-description,
+.card p,
+.card h1, .card h2, .card h3,
+.card .text {
+  white-space: normal;
+  overflow-wrap: anywhere;   /* strongest wrap behavior */
+  word-break: break-word;    /* fallback */
+}
+
+/* 3) Prevent any child from painting outside the card */
+.card {
+  overflow: hidden;          /* keeps overruns from spilling visually */
+}
+
 
 .card-title {
   white-space: normal;
